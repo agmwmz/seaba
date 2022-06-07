@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'battlefield.dart';
 
-class Screen extends StatelessWidget {
-  Battlefield battlefield = Battlefield();
+class Screen extends StatefulWidget {
+  @override
+  State<Screen> createState() => _ScreenState();
+}
+
+class _ScreenState extends State<Screen> {
+  Battlefield battlefield = Battlefield(dimension: 15);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,7 @@ class Screen extends StatelessWidget {
 
   Widget drawField() {
     var rows = <Widget>[];
-    for (var x = 1; x <= battlefield.dimension; x++) {
+    for (var x = 0; x <= battlefield.dimension; x++) {
       rows.add(Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: drawRow(x),
@@ -26,22 +31,42 @@ class Screen extends StatelessWidget {
 
   List<Widget> drawRow(int x) {
     var elements = <Widget>[];
-    for (var y = 1; y <= battlefield.dimension; y++) {
-      elements.add(
-        Container(
-          width: 50,
-          height: 50,
-          //color: x % 2 == 0 ? Colors.blue : Colors.red,
-          decoration: BoxDecoration(
-            color: getColor(x, y),
-            border: Border.all(
-              color: Colors.yellow,
-              width: 4,
+    for (var y = 0; y <= battlefield.dimension; y++) {
+      if (y == 0 || x == 0) {
+        elements.add(SizedBox(
+          width: 30,
+          height: 30,
+          child: Center(
+            child: Text(
+              y == 0
+                  ? x == 0
+                      ? ''
+                      : x.toString()
+                  : y.toString(),
+              textAlign: TextAlign.center,
             ),
-            borderRadius: BorderRadius.circular(12),
           ),
-        ),
-      );
+        ));
+      } else {
+        elements.add(
+          InkWell(
+            child: Container(
+              width: 30,
+              height: 30,
+              //color: x % 2 == 0 ? Colors.blue : Colors.red,
+              decoration: BoxDecoration(
+                color: getColor(x, y),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
+                // borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onTap: () => onTapProcessint(x, y),
+          ),
+        );
+      }
     }
     return elements;
   }
@@ -51,5 +76,10 @@ class Screen extends StatelessWidget {
     if (battlefield.cells[x - 1][y - 1] == 1) return Colors.green;
     if (battlefield.cells[x - 1][y - 1] == 1) return Colors.red;
     return Colors.black;
+  }
+
+  void onTapProcessint(int x, int y) {
+    battlefield.cells[x - 1][y - 1] = 2;
+    setState(() {});
   }
 }
