@@ -30,6 +30,7 @@ class _ScreenState extends State<Screen> {
   }
 
   List<Widget> drawRow(int x) {
+    List<String> list = ['A', 'B', 'C'];
     var elements = <Widget>[];
     for (var y = 0; y <= battlefield.dimension; y++) {
       if (y == 0 || x == 0) {
@@ -74,12 +75,12 @@ class _ScreenState extends State<Screen> {
   Color getColor(int x, int y) {
     if (battlefield.cells[x - 1][y - 1] == 0) return Colors.blue;
     if (battlefield.cells[x - 1][y - 1] == 1) return Colors.green;
-    if (battlefield.cells[x - 1][y - 1] == 1) return Colors.red;
+    if (battlefield.cells[x - 1][y - 1] == 2) return Colors.red;
     return Colors.black;
   }
 
   void onTapProcessint(int x, int y) {
-    battlefield.cells[x - 1][y - 1] = 2;
+    battlefield.cells[x - 1][y - 1] = 1;
     setState(() {});
   }
 }
